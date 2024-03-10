@@ -34,7 +34,7 @@ app.use((error, req, res, next) => {
   res.status(500).json({ message, data });
 });
 
-const port = 8000;
+const port = 8080;
 
 app.listen(port, () =>
   console.log("Book server started and listening on port" + port)

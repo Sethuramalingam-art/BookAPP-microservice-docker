@@ -1,0 +1,61 @@
+--------------------Dockerize the node app microservice and mongoDB -----------------
+
+core concept is,
+
+create a node app microservice 
+
+write the logics for CRUD opration on books details
+
+backend DB is mongoDB 
+
+
+--------------------------------------------------------
+now pull the mongoDB image from docker hub
+docker pull mongo:latest
+
+by default mongodb will run in th localhost:27017
+
+so we have mongodb dokcer image now and it is running in 27017 
+
+now we need to run the docker image for mongodb from 27017 to 27018 by using port mapping like below
+
+docker run --name mongo76 -p 27018:27017 -d mongo:7.0.6
+
+after success of this our mongodb running in localhost:27018. YOu check this in mongoDB GUI compass. 
+Now mongodb docker image will create docker container check using docker ps
+
+after all this we need to check mongodb container running ipaddress for connection string in node app
+
+for this 
+docker inspect <containerId>
+(containerid) you will get from docker ps => mongodb container
+
+after this we can update our env file with 
+mongodbURI: mongodb://172.17.0.2:27017/BOOKS(if mongodb container running in localhost you can mark mongodb://0.0.0.0/BOOKS)
+
+once connected please check mongoDB compass it will create new DB name called BOOKS
+
+---------------------------------connection done-------------------------------------
+
+---------------------------------create docker file for nodeapp -----------------------
+refer docker file in the folder
+
+once created do build 
+
+docker build -t nodejsbookmicroservice .
+
+once build success do run the docker image in 8080 port (mentioned in dockler file )
+docker run -p 8080:8080 nodejsbookmicroservice (mapped to 8080)
+
+now mongodb and node app running in diff container's and connected each other conenction bridge
+http://localhost:8081/api/v1/book/add
+http://localhost:8081/api/v1/books 
+
+check in postman...
+
+later days, 
+now you can go your powershell 
+check docker ps 
+docker images
+
+run the container based on the tag name you can access this app, no need to run in local
